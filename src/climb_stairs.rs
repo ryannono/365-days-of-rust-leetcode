@@ -1,3 +1,5 @@
+/// Difficulty: [Easy](https://leetcode.com/problems/climbing-stairs/description/)
+/// 
 /// Returns the number of distinct ways to climb a staircase with `n` steps.
 ///
 /// This function computes the number of ways using dynamic programming. It builds

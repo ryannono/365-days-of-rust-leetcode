@@ -5,6 +5,8 @@ pub struct ListNode {
 	pub next: Option<Box<ListNode>>,
 }
 
+/// Difficulty: [Easy](https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/)
+/// 
 /// Removes duplicate elements from a sorted linked list.
 ///
 /// # Arguments

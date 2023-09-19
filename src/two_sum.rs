@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+/// Difficulty: [Easy](https://leetcode.com/problems/two-sum/description/)
+/// 
 /// Finds two numbers within `nums` that sum up to `target` and returns their
 /// indices. If no such pair is found, returns an empty vector.
 ///
