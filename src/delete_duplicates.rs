@@ -5,25 +5,27 @@ pub struct ListNode {
 	pub next: Option<Box<ListNode>>,
 }
 
-/// Difficulty: [Easy](https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/)
-/// 
-/// Removes duplicate elements from a sorted linked list.
-///
-/// # Arguments
-///
-/// * `head` - An option that contains the head of the linked list wrapped in a
-///            Box. It might be None indicating the list is empty.
-///
-/// # Returns
-///
-/// * An `Option<Box<ListNode>>` which is the head of the modified linked list 
-///   with duplicates removed.
-///
-/// # Examples
-///
-/// ```
-/// // You could include an example here demonstrating the usage of the function
-/// `````
+/**
+Difficulty: [Easy](https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/)
+
+Removes duplicate elements from a sorted linked list.
+
+# Arguments
+
+* `head` - An option that contains the head of the linked list wrapped in a
+           Box. It might be None indicating the list is empty.
+
+# Returns
+
+* An `Option<Box<ListNode>>` which is the head of the modified linked list 
+  with duplicates removed.
+
+# Examples
+
+```
+// You could include an example here demonstrating the usage of the function
+`````
+*/
 pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
 	let mut head = head;
 	let mut ptr: &mut Option<Box<ListNode>> = &mut head;

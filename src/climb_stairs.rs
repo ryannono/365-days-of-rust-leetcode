@@ -1,29 +1,31 @@
-/// Difficulty: [Easy](https://leetcode.com/problems/climbing-stairs/description/)
-/// 
-/// Returns the number of distinct ways to climb a staircase with `n` steps.
-///
-/// This function computes the number of ways using dynamic programming. It builds
-/// up a vector `ways_vec` where the i-th element represents the number of ways
-/// to reach step i. The base cases are 0 ways to reach step 0, 1 way to reach
-/// step 1, and 2 ways to reach step 2.
-///
-/// # Arguments
-///
-/// * `n` - The number of steps in the staircase. It should be a non-negative 
-///         integer.
-///
-/// # Returns
-///
-/// * An `i32` representing the number of distinct ways to climb the staircase
-///   with `n` steps.
-///
-/// # Examples
-///
-/// ```
-/// # use your_crate::climb_stairs;
-/// assert_eq!(climb_stairs(2), 2);
-/// assert_eq!(climb_stairs(3), 3);
-/// ```
+/**
+Difficulty: [Easy](https://leetcode.com/problems/climbing-stairs/description/)
+
+Returns the number of distinct ways to climb a staircase with `n` steps.
+
+This function computes the number of ways using dynamic programming. It builds
+up a vector `ways_vec` where the i-th element represents the number of ways
+to reach step i. The base cases are 0 ways to reach step 0, 1 way to reach
+step 1, and 2 ways to reach step 2.
+
+# Arguments
+
+* `n` - The number of steps in the staircase. It should be a non-negative 
+        integer.
+
+# Returns
+
+* An `i32` representing the number of distinct ways to climb the staircase
+  with `n` steps.
+
+# Examples
+
+```
+# use your_crate::climb_stairs;
+assert_eq!(climb_stairs(2), 2);
+assert_eq!(climb_stairs(3), 3);
+```
+*/
 pub fn climb_stairs(n: i32) -> i32 {
   let mut ways_vec:Vec<i32> = vec![0, 1, 2];
 

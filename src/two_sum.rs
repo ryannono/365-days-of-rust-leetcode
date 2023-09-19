@@ -1,38 +1,40 @@
 use std::collections::HashMap;
 
-/// Difficulty: [Easy](https://leetcode.com/problems/two-sum/description/)
-/// 
-/// Finds two numbers within `nums` that sum up to `target` and returns their
-/// indices. If no such pair is found, returns an empty vector.
-///
-/// This function iterates over `nums` and uses a hash map to keep track of each
-/// number's index. For each number, it calculates the complementary number that,
-/// when added to the current number, will equal the `target`. If this complement
-/// is found in the hash map, it means a pair of numbers that sum up to `target`
-/// has been found, and their indices are returned.
-///
-/// # Parameters
-///
-/// - `nums`: A vector of integers in which to search for the pair.
-/// - `target`: The target sum we are trying to achieve with the pair of numbers.
-///
-/// # Returns
-///
-/// A vector containing two integers representing the indices of the pair of
-/// numbers that add up to `target`. If no such pair is found, returns an empty
-/// vector.
-///
-/// # Example
-///
-/// ```
-/// use your_crate_name::two_sum;
-///
-/// let nums = vec![2, 7, 11, 15];
-/// let target = 9;
-///
-/// let result = two_sum(nums, target);
-/// assert_eq!(result, vec![1, 0]);
-/// ```
+/**
+Difficulty: [Easy](https://leetcode.com/problems/two-sum/description/)
+
+Finds two numbers within `nums` that sum up to `target` and returns their
+indices. If no such pair is found, returns an empty vector.
+
+This function iterates over `nums` and uses a hash map to keep track of each
+number's index. For each number, it calculates the complementary number that,
+when added to the current number, will equal the `target`. If this complement
+is found in the hash map, it means a pair of numbers that sum up to `target`
+has been found, and their indices are returned.
+
+# Parameters
+
+- `nums`: A vector of integers in which to search for the pair.
+- `target`: The target sum we are trying to achieve with the pair of numbers.
+
+# Returns
+
+A vector containing two integers representing the indices of the pair of
+numbers that add up to `target`. If no such pair is found, returns an empty
+vector.
+
+# Example
+
+```
+use your_crate_name::two_sum;
+
+let nums = vec![2, 7, 11, 15];
+let target = 9;
+
+let result = two_sum(nums, target);
+assert_eq!(result, vec![1, 0]);
+```
+*/
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
 	let mut num_to_index: HashMap<i32, usize> = HashMap::new();
 

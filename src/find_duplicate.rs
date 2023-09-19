@@ -1,29 +1,31 @@
 use std::collections::HashSet;
 
-/// Difficulty: [Medium](https://leetcode.com/problems/find-the-duplicate-number/?envType=daily-question&envId=2023-09-19)
-/// 
-/// Finds the first duplicate element in the given vector of integers.
-///
-/// This function iterates over the input vector and uses a hash set to keep track
-/// of seen numbers. If a duplicate is found, it is immediately returned. If no 
-/// duplicate is found, it returns 0.
-///
-/// # Arguments
-///
-/// * `nums` - A vector of i32 integers. The input vector to search for duplicates.
-///
-/// # Returns
-///
-/// * An `i32` - The first duplicate element found in the vector. If no duplicate
-///   is found, it returns 0.
-///
-/// # Examples
-///
-/// ```
-/// # use your_crate::find_duplicate;
-/// assert_eq!(find_duplicate(vec![3, 1, 3, 4, 2]), 3);
-/// assert_eq!(find_duplicate(vec![1, 2, 3, 4]), 0);
-/// ```
+/**
+Difficulty: [Medium](https://leetcode.com/problems/find-the-duplicate-number/?envType=daily-question&envId=2023-09-19)
+
+Finds the first duplicate element in the given vector of integers.
+
+This function iterates over the input vector and uses a hash set to keep track
+of seen numbers. If a duplicate is found, it is immediately returned. If no 
+duplicate is found, it returns 0.
+
+# Arguments
+
+* `nums` - A vector of i32 integers. The input vector to search for duplicates.
+
+# Returns
+
+* An `i32` - The first duplicate element found in the vector. If no duplicate
+  is found, it returns 0.
+
+# Examples
+
+```
+# use your_crate::find_duplicate;
+assert_eq!(find_duplicate(vec![3, 1, 3, 4, 2]), 3);
+assert_eq!(find_duplicate(vec![1, 2, 3, 4]), 0);
+```
+*/
 pub fn find_duplicate(nums: Vec<i32>) -> i32 {
   let mut seen: HashSet<i32> = HashSet::new();
   
