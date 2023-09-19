@@ -19,6 +19,35 @@ impl<T: PartialEq> CharStack<T> for Vec<T> {
 	}
 }
 
+/**
+Difficulty: [Easy](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/description/)
+
+Removes adjacent duplicate characters from a string.
+
+This function iterates over each character in the input string and uses a stack
+to keep track of the characters seen. If a character is found to be the same as 
+the one at the top of the stack, all adjacent duplicates are removed from the 
+stack. Finally, the characters in the stack are collected to form a new string
+without adjacent duplicates.
+
+# Parameters
+
+- `s`: The input string from which adjacent duplicates need to be removed.
+
+# Returns
+
+A new string where all adjacent duplicate characters have been removed.
+
+# Example
+
+```rust
+use your_crate_name::remove_duplicates;
+
+let input = String::from("abbaca");
+let output = remove_duplicates(input);
+
+assert_eq!(output, "ca");
+*/
 pub fn remove_duplicates(s: String) -> String {
 	let mut char_stack: Vec<char> = vec![];
 
