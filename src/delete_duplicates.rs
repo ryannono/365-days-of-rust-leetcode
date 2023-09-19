@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -7,62 +5,37 @@ pub struct ListNode {
 	pub next: Option<Box<ListNode>>,
 }
 
-/// Removes duplicate values from a singly linked list.
+/// Removes duplicate elements from a sorted linked list.
 ///
-/// This function traverses the linked list and uses a hash set to keep track of 
-/// the unique values encountered. If it encounters a node with a value that is 
-/// already in the hash set, it removes that node from the list.
+/// # Arguments
 ///
-/// # Parameters
-///
-/// - `head`: An `Option` wrapping a `Box<ListNode>` that represents the head of 
-///   the linked list. If `None`, the list is considered empty.
+/// * `head` - An option that contains the head of the linked list wrapped in a
+///            Box. It might be None indicating the list is empty.
 ///
 /// # Returns
 ///
-/// An `Option` wrapping a `Box<ListNode>` that represents the head of the
-/// modified list with duplicates removed.
+/// * An `Option<Box<ListNode>>` which is the head of the modified linked list 
+///   with duplicates removed.
 ///
-/// # Type
+/// # Examples
 ///
-/// - `ListNode`: A struct representing a node in the list, which should have 
-///   at least a field `val` of type `i32` and a field `next` of type 
-///   `Option<Box<ListNode>>`.
-///
-/// # Example
-///
-/// ```rust
-/// use your_crate_name::ListNode;
-/// use your_crate_name::delete_duplicates;
-///
-/// let list = Some(Box::new(ListNode { val: 1, next: Some(Box::new(ListNode { 
-///     val: 2, next: Some(Box::new(ListNode { val: 2, next: None }))) 
-/// })));
-///
-/// let result = delete_duplicates(list);
-/// // Here, result would be a list with nodes containing values 1 and 2, with 
-/// // the duplicate node with value 2 removed.
 /// ```
+/// // You could include an example here demonstrating the usage of the function
+/// `````
 pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-	let mut nums: HashSet<i32> = HashSet::new();
 	let mut head = head;
 	let mut ptr: &mut Option<Box<ListNode>> = &mut head;
 
 	while let Some(node) = ptr {
-		nums.insert(node.val);
 
-		{
-			while node
-				.next
-				.as_ref()
-				.map_or(false, |next_node| nums.contains(&next_node.val))
-			{
-				node.next =
-					node.next.take().and_then(|next_node| next_node.next);
-			}
-		}
-
-		ptr = &mut node.next;
+        if node.next.as_ref().is_some_and(|next| next.val == node.val) {
+            node.next = node.next.take().and_then(|next| next.next);
+        } else {
+            ptr = match ptr {
+                Some(x) => &mut x.next,
+                None => ptr,
+            }
+        }
 	}
 
 	head
