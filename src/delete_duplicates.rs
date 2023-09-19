@@ -13,11 +13,11 @@ Removes duplicate elements from a sorted linked list.
 # Arguments
 
 * `head` - An option that contains the head of the linked list wrapped in a
-           Box. It might be None indicating the list is empty.
+		   Box. It might be None indicating the list is empty.
 
 # Returns
 
-* An `Option<Box<ListNode>>` which is the head of the modified linked list 
+* An `Option<Box<ListNode>>` which is the head of the modified linked list
   with duplicates removed.
 
 # Examples
@@ -31,15 +31,14 @@ pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
 	let mut ptr: &mut Option<Box<ListNode>> = &mut head;
 
 	while let Some(node) = ptr {
-
-        if node.next.as_ref().is_some_and(|next| next.val == node.val) {
-            node.next = node.next.take().and_then(|next| next.next);
-        } else {
-            ptr = match ptr {
-                Some(x) => &mut x.next,
-                None => ptr,
-            }
-        }
+		if node.next.as_ref().is_some_and(|next| next.val == node.val) {
+			node.next = node.next.take().and_then(|next| next.next);
+		} else {
+			ptr = match ptr {
+				Some(x) => &mut x.next,
+				None => ptr,
+			}
+		}
 	}
 
 	head
@@ -47,46 +46,46 @@ pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+	use super::*;
 
-    fn create_list(values: Vec<i32>) -> Option<Box<ListNode>> {
-        let mut head = None;
-        let current = &mut head;
+	fn create_list(values: Vec<i32>) -> Option<Box<ListNode>> {
+		let mut head = None;
+		let current = &mut head;
 
-        for &val in values.iter().rev() {
-            let node = Box::new(ListNode {
-                val,
-                next: current.take(),
-            });
+		for &val in values.iter().rev() {
+			let node = Box::new(ListNode {
+				val,
+				next: current.take(),
+			});
 
-            *current = Some(node);
-        }
+			*current = Some(node);
+		}
 
-        head
-    }
+		head
+	}
 
-    fn list_to_vec(mut head: Option<Box<ListNode>>) -> Vec<i32> {
-        let mut values = Vec::new();
-        while let Some(node) = head {
-            values.push(node.val);
-            head = node.next;
-        }
-        values
-    }
+	fn list_to_vec(mut head: Option<Box<ListNode>>) -> Vec<i32> {
+		let mut values = Vec::new();
+		while let Some(node) = head {
+			values.push(node.val);
+			head = node.next;
+		}
+		values
+	}
 
-    #[test]
-    fn test_delete_duplicates() {
-        let tests = vec![
-            (vec![1, 2, 3, 3, 4], vec![1, 2, 3, 4]),
-            (vec![1, 1, 1, 1, 1], vec![1]),
-            (vec![1, 2, 2, 3, 4, 4, 5], vec![1, 2, 3, 4, 5]),
-            (vec![], vec![]),
-        ];
+	#[test]
+	fn test_delete_duplicates() {
+		let tests = vec![
+			(vec![1, 2, 3, 3, 4], vec![1, 2, 3, 4]),
+			(vec![1, 1, 1, 1, 1], vec![1]),
+			(vec![1, 2, 2, 3, 4, 4, 5], vec![1, 2, 3, 4, 5]),
+			(vec![], vec![]),
+		];
 
-        for (input, expected) in tests {
-            let list = create_list(input);
-            let result = delete_duplicates(list);
-            assert_eq!(list_to_vec(result), expected);
-        }
-    }
+		for (input, expected) in tests {
+			let list = create_list(input);
+			let result = delete_duplicates(list);
+			assert_eq!(list_to_vec(result), expected);
+		}
+	}
 }

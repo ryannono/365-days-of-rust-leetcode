@@ -53,23 +53,26 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
 
 #[cfg(test)]
 mod tests {
-    use super::two_sum;
+	use super::two_sum;
 
-    #[test]
-    fn test_two_sum_1() {
-        let result = two_sum(vec![2, 7, 11, 15], 9);
-        assert!(result.contains(&0) && result.contains(&1));
-    }
+	#[test]
+	fn test_two_sum_1() {
+		let result = two_sum(vec![2, 7, 11, 15], 9);
+		assert!(result.contains(&0) && result.contains(&1));
+	}
 
-    #[test]
-    fn test_two_sum_2() {
-        let result = two_sum(vec![3, 2, 4], 6);
-        assert!((result.contains(&1) && result.contains(&2)) || (result.contains(&0) && result.contains(&1)));
-    }
+	#[test]
+	fn test_two_sum_2() {
+		let result = two_sum(vec![3, 2, 4], 6);
+		assert!(
+			(result.contains(&1) && result.contains(&2))
+				|| (result.contains(&0) && result.contains(&1))
+		);
+	}
 
-    #[test]
-    fn test_two_sum_3() {
-        let result = two_sum(vec![3, 3], 6);
-        assert!(result.contains(&0) && result.contains(&1));
-    }
+	#[test]
+	fn test_two_sum_3() {
+		let result = two_sum(vec![3, 3], 6);
+		assert!(result.contains(&0) && result.contains(&1));
+	}
 }
