@@ -29,12 +29,14 @@ assert_eq!(is_isomorphic(String::from("foo"), String::from("bar")), false);
 ```
 */
 pub fn is_isomorphic(s: String, t: String) -> bool {
+	if s.len() != t.len() {
+		return false;
+	}
+
 	let mut s_to_t: HashMap<char, char> = HashMap::new();
 	let mut seen_t_chars: HashSet<char> = HashSet::new();
 
-	for (i, s_char) in s.char_indices() {
-		let t_char = t.as_bytes()[i] as char;
-
+	for (s_char, t_char) in s.chars().zip(t.chars()) {
 		if let Some(map_t_char) = s_to_t.insert(s_char, t_char) {
 			if map_t_char != t_char {
 				return false;

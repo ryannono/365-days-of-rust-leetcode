@@ -27,20 +27,16 @@ let result = is_subsequence(String::from("axc"), String::from("ahbgdc"));
 assert_eq!(result, false);
 */
 pub fn is_subsequence(s: String, t: String) -> bool {
-	let s_bytes = s.as_bytes();
-	let t_bytes = t.as_bytes();
+	let mut s_chars = s.chars();
+	let mut curr_s_char = s_chars.next();
 
-	let mut s_i = 0;
-	let mut t_i = 0;
-
-	while s_i < s_bytes.len() && t_i < t_bytes.len() {
-		if s_bytes[s_i] == t_bytes[t_i] {
-			s_i += 1;
+	for t_char in t.chars() {
+		if curr_s_char.is_some_and(|s_char| s_char == t_char) {
+			curr_s_char = s_chars.next();
 		}
-		t_i += 1;
 	}
 
-	s_i == s_bytes.len()
+	curr_s_char.is_none()
 }
 
 #[cfg(test)]

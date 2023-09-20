@@ -1,9 +1,9 @@
-trait CharStack<T: PartialEq> {
-	fn cmp_top(&self, compare_val: T) -> bool;
+trait ExtString {
+	fn cmp_last(&self, compare_val: char) -> bool;
 }
 
-impl<T: PartialEq> CharStack<T> for Vec<T> {
-	/// The function `cmp_top` compares the last element of a collection with a given value.
+impl ExtString for String {
+	/// The function `cmp_top` compares the last character of a string with a given value.
 	///
 	/// Arguments:
 	///
@@ -13,9 +13,9 @@ impl<T: PartialEq> CharStack<T> for Vec<T> {
 	/// Returns:
 	///
 	/// Whether the top matches the passed value.
-	fn cmp_top(&self, compare_val: T) -> bool {
-		self.last()
-			.map_or(false, |last_char| *last_char == compare_val)
+	fn cmp_last(&self, compare_val: char) -> bool {
+		self.chars().nth_back(0)
+			.map_or(false, |last_char| last_char == compare_val)
 	}
 }
 
@@ -49,21 +49,21 @@ let output = remove_duplicates(input);
 assert_eq!(output, "ca");
 */
 pub fn remove_duplicates(s: String) -> String {
-	let mut char_stack: Vec<char> = vec![];
+	let mut result_str = String::new();
 
 	for curr_char in s.chars() {
-		match char_stack.cmp_top(curr_char) {
+		match result_str.cmp_last(curr_char) {
 			true => {
-				while char_stack.cmp_top(curr_char) {
-					char_stack.pop();
+				while result_str.cmp_last(curr_char) {
+					result_str.pop();
 				}
 			}
 
-			false => char_stack.push(curr_char),
+			false => result_str.push(curr_char),
 		}
 	}
 
-	char_stack.iter().collect()
+	result_str
 }
 
 #[cfg(test)]
