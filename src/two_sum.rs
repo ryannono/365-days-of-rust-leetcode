@@ -39,13 +39,15 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
 	let mut num_to_index: HashMap<i32, usize> = HashMap::new();
 
 	for (index, &num) in nums.iter().enumerate() {
-		if let Some(&hashed_complement_index) =
-			num_to_index.get(&(target - num))
-		{
-			return vec![index as i32, hashed_complement_index as i32];
-		} else {
-			num_to_index.insert(num, index);
-		}
+		match num_to_index.get(&(target - num)) {
+			Some(&hashed_complement_index) => {
+				return vec![index as i32, hashed_complement_index as i32];
+			}
+
+			None => {
+				num_to_index.insert(num, index);
+			}
+		};
 	}
 
 	vec![]
