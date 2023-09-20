@@ -8,5 +8,7 @@ pub mod remove_duplicates;
 pub mod repeated_substring_pattern;
 pub mod three_sum_closest;
 pub mod two_sum;
+pub mod three_sum;
 
-fn main() {}
+fn main() {
+}
