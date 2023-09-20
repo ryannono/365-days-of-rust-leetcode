@@ -4,6 +4,8 @@ pub enum Side {
 }
 
 /**
+Difficulty: [Medium](https://leetcode.com/problems/3sum/description/)
+
 Finds all the unique triplets in the array `nums` which sum up to zero.
 
 This function first sorts the input vector `nums` in non-decreasing order. It then 
@@ -33,7 +35,6 @@ assert_eq!(result, vec![vec![-1, -1, 2], vec![-1, 0, 1]]);
 */
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
 	let mut nums = nums;
-	let nums_len = nums.len();
 	let mut triplets: Vec<Vec<i32>> = vec![];
 
 	nums.sort_unstable();
@@ -49,7 +50,7 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
 			.unwrap_or(left_i),
 	};
 
-	for i in 0..(nums_len - 2) {
+	for i in 0..(nums.len() - 2) {
 		// Early exit if the smallest number is greater than 0
 		if nums[i] > 0 {
 			break;
@@ -61,7 +62,7 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
 		}
 
 		let mut left_i = i + 1;
-		let mut right_i = nums_len - 1;
+		let mut right_i = nums.len() - 1;
 
 		while left_i < right_i {
 			match nums[i] + nums[left_i] + nums[right_i] {
