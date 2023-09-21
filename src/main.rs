@@ -11,9 +11,19 @@ pub mod repeated_substring_pattern;
 pub mod three_sum;
 pub mod three_sum_closest;
 pub mod two_sum;
+pub mod swap_pairs;
 
 fn main() {
-	// println!("{:?}", letter_combinations("23".to_string()));
-	// println!("{:?}", letter_combinations("2".to_string()));
-	// println!("{:?}", letter_combinations("234".to_string()));
+	// println!(
+	// 	"{:?}",
+	// 	swap_pairs(Some(Box::new(ListNode {
+	// 		val: 1,
+	// 		next: Some(Box::new(ListNode {
+	// 			val: 2,
+	// 			next: Some(Box::new(ListNode::new(3)))
+	// 		}))
+	// 	})))
+	// );
 }
+
+
