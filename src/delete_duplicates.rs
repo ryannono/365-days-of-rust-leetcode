@@ -33,12 +33,14 @@ impl DeleteNode<Self> for Box<ListNode> {
 	/// * `Option<&mut Self>` - A mutable reference to the next node after
 	///   deletion or the tail of the list if there are no more nodes.
 	fn delete(&mut self) -> Option<&mut Self> {
-		if self.next.is_some() {
-			*self = self.next.take()?; // Overwrite the current node with the next node.
-			return Some(self); // Return the modified current node.
-		}
+		match self.next.take() {
+			Some(next_node) => {
+				*self = next_node;
+				Some(self)
+			}
 
-		self.next.as_mut()
+			None => self.next.as_mut(),
+		}
 	}
 }
 
