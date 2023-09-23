@@ -1,15 +1,20 @@
+
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct ListNode {
 	pub val: i32,
 	pub next: Option<Box<ListNode>>,
 }
 
-trait ListSwaps<T> {
-	fn swap_with_nth_node_after(&mut self, n: i32);
+pub trait ListSwaps<T> {
+	fn swap_with_nth_node_after(&mut self, n: i32) -> bool;
 	fn swap_with_next(&mut self);
 	fn swap_with_end(&mut self);
 	fn move_to_end(&mut self);
 	fn reverse_from(&mut self);
+}
+
+pub trait ListGets<T> {
+	fn nth_node_from(&mut self, n: i32) -> Option<&mut T>;
 }
 
 /// A singly-linked list node.
@@ -25,8 +30,28 @@ impl ListNode {
 	///
 	/// * An `Option` wrapping a boxed `ListNode`.
 	#[inline]
-	fn new(val: i32, next: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+	pub fn new(val: i32, next: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
 		Some(Box::new(ListNode { next, val }))
+	}
+
+	pub fn from_vec(vec: Vec<i32>) -> Option<Box<ListNode>> {
+		let mut new_node = None;
+		for &val in vec.iter().rev() {
+			new_node = Self::new(val, new_node);
+		}
+
+		new_node
+	}
+
+	pub fn to_vec(node: Option<Box<ListNode>>) -> Vec<i32> {
+		let mut vec = Vec::new();
+		let mut current = node;
+		while let Some(mut boxed_node) = current {
+			vec.push(boxed_node.val);
+			current = boxed_node.next.take();
+		}
+
+		vec
 	}
 }
 
@@ -53,29 +78,42 @@ impl ListSwaps<Self> for Box<ListNode> {
 	///
 	/// * `n` - The number of nodes to skip before swapping.
 	///
+	/// # Returns
+	///
+	/// * A boolean indicating the success of the swap operation. Returns `true`
+	///   if the swap was successful, and `false` otherwise.
+	///
 	/// # Safety
 	///
 	/// Calls to an `unsafe` function to retrieve the nth node. Ensure list
 	/// structure remains consistent when using this method.
-	fn swap_with_nth_node_after(&mut self, n: i32) {
-		if n == 0 || self.next.is_none() {
-			return;
+	fn swap_with_nth_node_after(&mut self, n: i32) -> bool {
+		if n == 0 {
+			return true;
+		}
+
+		if self.next.is_none() {
+			return false;
 		}
 
 		if n == 1 {
-			return self.swap_with_next();
+			self.swap_with_next();
+			return true;
 		}
 
 		if let Some(swap_node) = unsafe { get_nth_node(self, n) } {
 			let head_next = self.next.take();
 			let swap_node_next = swap_node.next.take();
-			println!("{:?}", swap_node_next);
 
 			std::mem::swap(self, swap_node);
 
 			self.next = head_next;
 			swap_node.next = swap_node_next;
+
+			return true;
 		}
+
+		false
 	}
 
 	/// Swaps the current node with the last node in the list.
@@ -142,6 +180,12 @@ impl ListSwaps<Self> for Box<ListNode> {
 	}
 }
 
+impl ListGets<Self> for Box<ListNode> {
+	fn nth_node_from(&mut self, n: i32) -> Option<&mut Box<ListNode>> {
+		unsafe { get_nth_node(self, n) }
+	}
+}
+
 unsafe fn get_nth_node<'a>(
 	mut raw_ptr: *mut Box<ListNode>,
 	n: i32,
@@ -173,36 +217,17 @@ unsafe fn get_last_node<'a>(
 
 #[cfg(test)]
 mod tests {
-	use crate::list_node::ListSwaps;
 
-	use super::ListNode;
-
-	fn create_list(vals: Vec<i32>) -> Option<Box<ListNode>> {
-		let mut new_node = None;
-		for &val in vals.iter().rev() {
-			new_node = ListNode::new(val, new_node);
-		}
-		new_node
-	}
-
-	fn list_to_vec(node: Option<Box<ListNode>>) -> Vec<i32> {
-		let mut vec = Vec::new();
-		let mut current = node;
-		while let Some(mut boxed_node) = current {
-			vec.push(boxed_node.val);
-			current = boxed_node.next.take();
-		}
-		vec
-	}
+	use super::{ListNode, ListSwaps};
 
 	#[test]
 	fn test() {
 		let mut list =
-			create_list(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).unwrap();
+			ListNode::from_vec(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).unwrap();
 
 		list.reverse_from();
 
-		let result = list_to_vec(Some(list));
+		let result = ListNode::to_vec(Some(list));
 
 		println!("{:?}", result);
 	}

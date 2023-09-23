@@ -43,6 +43,7 @@ impl BubbleNode<Self> for Box<ListNode> {
 	}
 }
 
+/// Difficulty: [Medium](https://leetcode.com/problems/swap-nodes-in-pairs/description/)
 /// Swaps every two adjacent nodes of a linked list.
 ///
 /// # Description
