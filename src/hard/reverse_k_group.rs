@@ -1,4 +1,4 @@
-use crate::util::list_node::{ListNode, ListSwaps};
+use crate::util::list_node::{ListNode, ListMethods};
 
 /// Difficulty: [Hard](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
 /// 
