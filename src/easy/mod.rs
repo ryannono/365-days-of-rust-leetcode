@@ -7,3 +7,4 @@ pub mod max_profit;
 pub mod remove_duplicates;
 pub mod repeated_substring_pattern;
 pub mod two_sum;
+pub mod diagonal_sum;
