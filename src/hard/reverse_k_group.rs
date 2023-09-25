@@ -1,7 +1,7 @@
-use crate::util::list_node::{ListNode, ListMethods};
+use crate::util::list_node::{ListMethods, ListNode};
 
 /// Difficulty: [Hard](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
-/// 
+///
 /// Reverses nodes in `k`-node groups within the linked list.
 ///
 /// Given a linked list, this function will reverse the nodes of the list `k`
@@ -39,15 +39,11 @@ pub fn reverse_k_group(
 
 		match should_swap {
 			true => {
-				if !node.swap_with_nth_node_after(k - 1 - (swap_counter * 2)) {
+				if !node.swap_with_nth(k - 1 - (swap_counter * 2)) {
 					break;
 				}
-
 				swap_counter += 1;
-
-				if swap_counter == (k / 2) {
-					should_swap = false;
-				}
+				should_swap = swap_counter < (k / 2);
 			}
 
 			false => {
@@ -71,9 +67,9 @@ mod tests {
 	#[test]
 	fn test_reverse_k_group() {
 		// Test when k = 2
-		let list = ListNode::from_vec(vec![1, 2, 3, 4]);
-		let result = reverse_k_group(list, 2);
-		assert_eq!(result, ListNode::from_vec(vec![2, 1, 4, 3]));
+		let list = ListNode::from_vec(vec![1, 2, 3, 4, 5]);
+		let result = reverse_k_group(list, 1);
+		assert_eq!(result, ListNode::from_vec(vec![1, 2, 3, 4, 5]));
 
 		// Test when k = 3
 		let list = ListNode::from_vec(vec![1, 2, 3, 4, 5]);

@@ -4,17 +4,6 @@ pub struct ListNode {
 	pub next: Option<Box<ListNode>>,
 }
 
-pub trait ListMethods<T> {
-	fn swap_with_nth_node_after(&mut self, n: i32) -> bool;
-	fn swap_with_next(&mut self) -> Option<&mut Box<ListNode>>;
-	fn swap_with_end(&mut self);
-	fn move_to_end(&mut self);
-	fn reverse_from(&mut self);
-	fn nth_node_from(&mut self, n: i32) -> Option<&mut T>;
-	fn delete(&mut self) -> Option<&mut T>;
-}
-
-/// A singly-linked list node.
 impl ListNode {
 	/// Creates a new ListNode with a given value and optional next node.
 	///
@@ -52,10 +41,56 @@ impl ListNode {
 	}
 }
 
-/// Provides operations to swap nodes in the list.
+pub trait ListMethods<T> {
+	fn nth(&mut self, n: i32) -> Option<&mut Box<ListNode>>;
+	fn last(&mut self) -> Option<&mut Box<ListNode>>;
+	fn swap_with_last(&mut self);
+	fn swap_with_next(&mut self) -> Option<&mut Box<ListNode>>;
+	fn swap_with_nth(&mut self, n: i32) -> bool;
+	fn move_to_end(&mut self);
+	fn reverse_from(&mut self);
+	fn delete(&mut self) -> Option<&mut Box<ListNode>>;
+}
+
+/// A singly-linked list node.
 impl ListMethods<Self> for Box<ListNode> {
+	fn nth(&mut self, mut n: i32) -> Option<&mut Box<ListNode>> {
+		let mut ptr = self;
+
+		while n > 0 {
+			ptr = ptr.next.as_mut()?;
+			n -= 1;
+		}
+
+		Some(ptr)
+	}
+
+	fn last(&mut self) -> Option<&mut Box<ListNode>> {
+		let mut ptr = self;
+
+		while ptr.next.is_some() {
+			ptr = ptr.next.as_mut()?;
+		}
+
+		Some(ptr)
+	}
+
+	/// Swaps the current node with the last node in the list.
+	///
+	fn swap_with_last(&mut self) {
+		let ptr: *mut Box<ListNode> = self;
+
+		if let Some(tail) = unsafe { (*ptr).last() } {
+			let head_next = self.next.take();
+
+			std::mem::swap(tail, self);
+
+			self.next = head_next;
+		}
+	}
+
 	/// Swaps the current node's value and next pointer with its subsequent node.
-	/// 
+	///
 	/// # Returns
 	///
 	/// * The function returns a mutable reference (`if some`) to the node after the swapped pair,
@@ -84,11 +119,7 @@ impl ListMethods<Self> for Box<ListNode> {
 	/// * A boolean indicating the success of the swap operation. Returns `true`
 	///   if the swap was successful, and `false` otherwise.
 	///
-	/// # Safety
-	///
-	/// Calls to an `unsafe` function to retrieve the nth node. Ensure list
-	/// structure remains consistent when using this method.
-	fn swap_with_nth_node_after(&mut self, n: i32) -> bool {
+	fn swap_with_nth(&mut self, n: i32) -> bool {
 		if n == 0 {
 			return true;
 		}
@@ -102,7 +133,8 @@ impl ListMethods<Self> for Box<ListNode> {
 			return true;
 		}
 
-		if let Some(swap_node) = unsafe { get_nth_node(self, n) } {
+		let ptr: *mut Box<ListNode> = self;
+		if let Some(swap_node) = unsafe { (*ptr).nth(n) } {
 			let head_next = self.next.take();
 			let swap_node_next = swap_node.next.take();
 
@@ -117,26 +149,8 @@ impl ListMethods<Self> for Box<ListNode> {
 		false
 	}
 
-	/// Swaps the current node with the last node in the list.
-	///
-	/// # Safety
-	///
-	/// Calls to an `unsafe` function to retrieve the last node. Ensure list
-	/// structure remains consistent when using this method.
-	fn swap_with_end(&mut self) {
-		let tail = unsafe { get_last_node(self) };
-
-		let head_next = self.next.take();
-
-		std::mem::swap(tail, self);
-
-		self.next = head_next;
-	}
-
 	/// Moves the current node to the end of the list.
 	///
-	/// This is done by recursively swapping the current node with the next node
-	/// until it reaches the end.
 	fn move_to_end(&mut self) {
 		if self.next.is_none() {
 			return;
@@ -148,8 +162,6 @@ impl ListMethods<Self> for Box<ListNode> {
 
 	/// Reverses the linked list starting from the current node.
 	///
-	/// This method reverses all nodes succeeding the current node, making
-	/// the current node the new tail of the reversed sublist.
 	fn reverse_from(&mut self) {
 		// `previous` initially points to None as we start the reversal.
 		// it will hold the reversed sublist - (previously seen nodes)
@@ -180,31 +192,11 @@ impl ListMethods<Self> for Box<ListNode> {
 		self.next = previous.unwrap().next;
 	}
 
-	fn nth_node_from(&mut self, n: i32) -> Option<&mut Box<ListNode>> {
-		unsafe { get_nth_node(self, n) }
-	}
-
 	/// Deletes the current node (`self`) and replaces it with the next node
 	/// (`self.next`), effectively skipping over one node in the list.
 	///
 	/// This function performs an in-place modification of the list.
 	///
-	/// ## Workflow:
-	/// 1. Check if there's a next node (`self.next.is_some()`).
-	/// 2. If there's a next node, we use the `Option::take` method to
-	///    temporarily detach it from the list.
-	/// 3. We then overwrite the current node (`*self`) with its next node.
-	///    This effectively "deletes" the current node by overwriting
-	///    it with its successor.
-	/// 4. Return a mutable reference to the modified current node.
-	///
-	/// If there's no next node (i.e., `self` is the last node), this function
-	/// simply returns a mutable reference to the `None` value succeeding the last node.
-	///
-	/// # Returns
-	///
-	/// * `Option<&mut Self>` - A mutable reference to the next node after
-	///   deletion or the tail of the list if there are no more nodes.
 	fn delete(&mut self) -> Option<&mut Self> {
 		match self.next.take() {
 			Some(next_node) => {
@@ -217,35 +209,6 @@ impl ListMethods<Self> for Box<ListNode> {
 	}
 }
 
-unsafe fn get_nth_node<'a>(
-	mut raw_ptr: *mut Box<ListNode>,
-	n: i32,
-) -> Option<&'a mut Box<ListNode>> {
-	let mut traversed_nodes_count = 0;
-
-	while (*raw_ptr).next.is_some() && traversed_nodes_count < n {
-		let next: *mut Box<ListNode> = (*raw_ptr).next.as_mut().unwrap();
-		raw_ptr = next;
-		traversed_nodes_count += 1;
-	}
-
-	match traversed_nodes_count == n {
-		true => Some(&mut *raw_ptr),
-		false => None,
-	}
-}
-
-unsafe fn get_last_node<'a>(
-	mut raw_ptr: *mut Box<ListNode>,
-) -> &'a mut Box<ListNode> {
-	while (*raw_ptr).next.is_some() {
-		let next: *mut Box<ListNode> = (*raw_ptr).next.as_mut().unwrap();
-		raw_ptr = next;
-	}
-
-	&mut *raw_ptr
-}
-
 #[cfg(test)]
 mod tests {
 
@@ -256,7 +219,7 @@ mod tests {
 		let mut list =
 			ListNode::from_vec(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).unwrap();
 
-		list.swap_with_next();
+		list.delete();
 
 		let result = ListNode::to_vec(Some(list));
 
