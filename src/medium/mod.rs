@@ -5,3 +5,4 @@ pub mod max_vowels;
 pub mod swap_pairs;
 pub mod three_sum;
 pub mod three_sum_closest;
+pub mod rectangle_area;
