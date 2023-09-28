@@ -6,3 +6,4 @@ pub mod swap_pairs;
 pub mod three_sum;
 pub mod three_sum_closest;
 pub mod rectangle_area;
+pub mod decode_at_index;
